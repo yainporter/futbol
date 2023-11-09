@@ -20,6 +20,17 @@ Starter repository for the [Turing School](https://turing.io/) Futbol project.
   - Here's our [DTR](https://docs.google.com/document/d/1xdChJs9go9xLeWd-F0ynMmLErYvVvaVrOKScmiPf3vU/edit)
   - Completed on 7 NOV 23
 
+## Retrospective Deliverables
+  - We used [EasyRetro.io](https://easyretro.io/publicboard/kYojieryKEXgTNWtFCcgXcAIfm22/4c64e160-b452-4978-bcfd-75fb1458ea29)
+  - Top 3 Things That Went Well
+    1. We've been able to meet pretty regularly.
+    2. We're on the same page
+    3. Initial code design worked pretty well.
+  - Top 3 Things Your Team Would Do Differently Next Time
+    1. We'd do it in person next time! :handshake:
+    2. Have a project luncheon together :hamburger: :fries: :pizza: :ramen: :beers:
+    3. Read all the directions before starting :sweat_smile:.
+
 ### Contributors
 Barry Allahyar => [LinkedIn]() [GitHub]()
 
