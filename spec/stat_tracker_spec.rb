@@ -93,9 +93,13 @@ RSpec.describe StatTracker do
     expect(@stat_tracker.highest_scoring_home_team).to eq ("FC Dallas")
   end
 
-  it "can return the coach with highest winning percentage" do
+  it "can return the coach with highest winning percentage for a season" do
+    
+    expect(@stat_tracker.winningest_coach('20122013')).to be_a String
+    expect(@stat_tracker.winningest_coach('20122013')).to eq("Claude Julien")
+  end
 
-    expect(@stat_tracker.winningest_coach).to be_a String
-    expect(@stat_tracker.winningest_coach).to eq("Claude Julien")
+  it "can return the coach with the worst win percentage for the season" do
+
   end
 end

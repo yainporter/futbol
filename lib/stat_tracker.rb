@@ -97,15 +97,22 @@ class StatTracker
     find_team(:home, "max")
   end
 
-  def winningest_coach
+  def winningest_coach(season)
+    game_list = []
+    @games.detect do |game|
+      game_id = game.game_id if game.season == season
+      @game_teams.each do |game|
+        game_list << game if game.game_id == game_id
+      end
+    end
     coach_win_hash = Hash. new(0)
     games_total_by_coach = Hash.new(0)
     coach_win_percentage = Hash. new(0.0)
     winner = nil
-    @game_teams.each do |game|
+    game_list.each do |game|
       coach_win_hash[game.head_coach] += 1 if game.result == 'WIN'
     end
-    @game_teams.each do |game|
+    game_list.each do |game|
       games_total_by_coach[game.head_coach] += 1 if game.result != nil
     end
     games_total_by_coach.each do |coach, points|
@@ -116,7 +123,7 @@ class StatTracker
     coach_win_percentage.select do |coach, win_percent|
       winner = coach if win_percent == coach_win_percentage.values.max &&
       coach_win_hash.values.max == coach_win_hash[coach]
-  end
+    end
     winner
   end
 
