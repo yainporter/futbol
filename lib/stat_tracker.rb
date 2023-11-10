@@ -128,6 +128,37 @@ class StatTracker
     winner
   end
 
+  def worst_coach(season)
+    game_id_list = []
+    game_list = []
+    @games.each do |game|
+      game_id_list << game.game_id if game.season == season
+    end
+    @game_teams.each do |game|
+      game_list << game if game_id_list.include?(game.game_id)
+    end
+    coach_lose_hash = Hash. new(0)
+    games_total_by_coach = Hash.new(0)
+    coach_lose_percentage = Hash. new(0.0)
+    loser = nil
+    game_list.each do |game|
+      coach_lose_hash[game.head_coach] += 1 if game.result == 'LOSS'
+    end
+    game_list.each do |game|
+      games_total_by_coach[game.head_coach] += 1 if game.result != nil
+    end
+    games_total_by_coach.each do |coach, points|
+      coach_lose_hash.each do |c, p|
+        coach_lose_percentage[c] = p.fdiv(points).round(2) if coach == c
+      end
+    end
+    coach_lose_percentage.select do |coach, lose_percent|
+      loser = coach if lose_percent == coach_lose_percentage.values.max &&
+      coach_lose_hash.values.max == coach_lose_hash[coach]
+    end
+    loser
+  end
+
   private
 
   def total_goals(game)
