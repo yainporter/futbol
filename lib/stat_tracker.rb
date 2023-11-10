@@ -98,12 +98,13 @@ class StatTracker
   end
 
   def winningest_coach(season)
+    game_id_list = []
     game_list = []
-    @games.detect do |game|
-      game_id = game.game_id if game.season == season
-      @game_teams.each do |game|
-        game_list << game if game.game_id == game_id
-      end
+    @games.each do |game|
+      game_id_list << game.game_id if game.season == season
+    end
+    @game_teams.each do |game|
+      game_list << game if game_id_list.include?(game.game_id)
     end
     coach_win_hash = Hash. new(0)
     games_total_by_coach = Hash.new(0)
