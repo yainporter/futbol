@@ -228,7 +228,7 @@ class StatTracker
       home: teams_average_score_home,
       away: teams_average_score_away
     }
-  end
+  end  
 
   def find_team(hoa, max_or_min)
     team = nil
