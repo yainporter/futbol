@@ -92,4 +92,16 @@ RSpec.describe StatTracker do
     expect(@stat_tracker.highest_scoring_home_team).to be_a String
     expect(@stat_tracker.highest_scoring_home_team).to eq ("FC Dallas")
   end
+
+  it 'can return the name of the Team with the most tackles in a season' do
+
+    expect(@stat_tracker.most_tackles("20122013")).to be_a String
+    expect(@stat_tracker.most_tackles("20122013")).to eq("FC Dallas")
+  end
+
+  it 'can return the name of the Team with the fewest tackles in a season' do
+
+    expect(@stat_tracker.fewest_tackles("20122013")).to be_a String
+    expect(@stat_tracker.fewest_tackles("20122013")).to eq("New England Revolution")
+  end
 end
