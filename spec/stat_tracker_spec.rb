@@ -95,9 +95,9 @@ RSpec.describe StatTracker do
 
   it "has a most_accurate_team method" do
 
-    @game_path = './data/games_subset_2.csv'
+    @game_path = './data/games.csv'
     @team_path = './data/teams.csv'
-    @game_teams_path = './data/game_teams_subset_2.csv'
+    @game_teams_path = './data/game_teams.csv'
 
     @locations = {
       games: @game_path,
@@ -116,15 +116,15 @@ RSpec.describe StatTracker do
     expect(@stat_tracker.games_in_each_season["20122013"].first).to eq("2012030221")
 
     expect(@stat_tracker.team_goal_percentage_hash("20122013")).to be_a Hash
-    expect(@stat_tracker.team_goal_percentage_hash("20122013")["FC Cincinnati"]).to eq(0.3)
+    expect(@stat_tracker.team_goal_percentage_hash("20122013")["FC Cincinnati"]).to eq(0.29844)
     expect(@stat_tracker.team_goal_percentage_hash("20142015")).to be_a Hash
-    expect(@stat_tracker.team_goal_percentage_hash("20142015")["Houston Dynamo"]).to eq(0.33)
+    expect(@stat_tracker.team_goal_percentage_hash("20142015")["Houston Dynamo"]).to eq(0.29349)
 
-    expect(@stat_tracker.most_accurate_team("20122013")).to eq("New York City FC")
-    expect(@stat_tracker.most_accurate_team("20142015")).to eq("New England Revolution")
+    expect(@stat_tracker.most_accurate_team("20132014")).to eq("Real Salt Lake")
+    expect(@stat_tracker.most_accurate_team("20142015")).to eq("Toronto FC")
 
-    expect(@stat_tracker.least_accurate_team("20122013")).to eq("Houston Dynamo")
-    expect(@stat_tracker.least_accurate_team("20142015")).to eq("Sporting Kansas City")
+    expect(@stat_tracker.least_accurate_team("20132014")).to eq("New York City FC")
+    expect(@stat_tracker.least_accurate_team("20142015")).to eq("Columbus Crew SC")
 
   end
 

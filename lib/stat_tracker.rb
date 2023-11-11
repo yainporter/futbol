@@ -146,7 +146,7 @@ class StatTracker
       end
     end
     shots_goals_by_team_name_hash.each do |name, shots_goals|
-      shots_goals_by_team_name_hash[name] = shots_goals[:goals].fdiv(shots_goals[:shots]).round(2)
+      shots_goals_by_team_name_hash[name] = shots_goals[:goals].fdiv(shots_goals[:shots]).round(5)
     end
     shots_goals_by_team_name_hash
   end
