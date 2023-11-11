@@ -97,6 +97,66 @@ class StatTracker
     find_team(:home, "max")
   end
 
+  def winningest_coach(season)
+    game_id_list = []
+    game_list = []
+    @games.each do |game|
+      game_id_list << game.game_id if game.season == season
+    end
+    @game_teams.each do |game|
+      game_list << game if game_id_list.include?(game.game_id)
+    end
+    coach_win_hash = Hash. new(0)
+    games_total_by_coach = Hash.new(0)
+    coach_win_percentage = Hash.new(0.0)
+    winner = nil
+    game_list.each do |game|
+      coach_win_hash[game.head_coach] += 1 if game.result == 'WIN'
+    end
+    game_list.each do |game|
+      games_total_by_coach[game.head_coach] += 1 if game.result != nil
+    end
+    games_total_by_coach.each do |coach, games|
+      coach_win_hash.each do |c, w|
+        coach_win_percentage[c] = w.fdiv(games).round(2) if coach == c
+      end
+    end
+    coach_win_hash.select do |coach, wins|
+      winner = coach if coach_win_hash[coach] == coach_win_hash.values.max
+    end
+    winner #get working with all seasons
+  end
+
+  def worst_coach(season)
+    game_id_list = []
+    game_list = []
+    @games.each do |game|
+      game_id_list << game.game_id if game.season == season
+    end
+    @game_teams.each do |game|
+      game_list << game if game_id_list.include?(game.game_id)
+    end
+    coach_win_hash = Hash. new(0)
+    games_total_by_coach = Hash.new(0)
+    coach_win_percentage = Hash.new(0.0)
+    loser = nil
+    game_list.each do |game|
+      coach_win_hash[game.head_coach] += 1 if game.result == 'LOSS'
+    end
+    game_list.each do |game|
+      games_total_by_coach[game.head_coach] += 1 if game.result != nil
+    end
+    games_total_by_coach.each do |coach, games|
+      coach_win_hash.each do |c, g|
+        coach_win_percentage[c] = g.fdiv(games).round(2) if coach == c
+      end
+    end
+    coach_win_hash.select do |coach, wins|
+      loser = coach if coach_win_hash[coach] == coach_win_hash.values.min
+    end
+    loser
+  end
+
   private
 
   def total_goals(game)

@@ -92,4 +92,38 @@ RSpec.describe StatTracker do
     expect(@stat_tracker.highest_scoring_home_team).to be_a String
     expect(@stat_tracker.highest_scoring_home_team).to eq ("FC Dallas")
   end
+
+  it "can return the coach with highest winning percentage for a season" do
+    @game_path = './data/games.csv'
+    @team_path = './data/teams.csv'
+    @game_teams_path = './data/game_teams.csv'
+
+    @locations = {
+      games: @game_path,
+      teams: @team_path,
+      game_teams: @game_teams_path
+    }
+
+    @stat_tracker = StatTracker.from_csv(@locations)
+
+    expect(@stat_tracker.winningest_coach('20122013')).to be_a String
+    expect(@stat_tracker.winningest_coach('20122013')).to eq("Claude Julien").or(eq("Joel Quenneville"))
+  end
+
+  it "can return the coach with the worst win percentage for the season" do
+    @game_path = './data/games.csv'
+    @team_path = './data/teams.csv'
+    @game_teams_path = './data/game_teams.csv'
+
+    @locations = {
+      games: @game_path,
+      teams: @team_path,
+      game_teams: @game_teams_path
+    }
+
+    @stat_tracker = StatTracker.from_csv(@locations)
+
+    expect(@stat_tracker.worst_coach('20122013')).to be_a String
+    expect(@stat_tracker.worst_coach('20122013')).to eq("Martin Raymond")
+  end
 end
