@@ -32,7 +32,7 @@ Starter repository for the [Turing School](https://turing.io/) Futbol project.
     3. Read all the directions before starting :sweat_smile:.
 
 ### Contributors
-Barry Allahyar => [LinkedIn]() [GitHub]()
+Barry Allahyar => [LinkedIn](https://www.linkedin.com/in/barryallahyar/) [GitHub](https://github.com/BarryA)
 
 Yain Porter => [LinkedIn](https://www.linkedin.com/in/yain-porter-ab2798295/) [GitHub](https://github.com/yainporter)
 
