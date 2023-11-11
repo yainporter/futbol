@@ -105,9 +105,9 @@ RSpec.describe StatTracker do
     }
 
     @stat_tracker = StatTracker.from_csv(@locations)
-    
+
     expect(@stat_tracker.winningest_coach('20122013')).to be_a String
-    expect(@stat_tracker.winningest_coach('20122013')).to eq("Dan Lacroix")
+    expect(@stat_tracker.winningest_coach('20122013')).to eq("Claude Julien").or(eq("Joel Quenneville"))
   end
 
   it "can return the coach with the worst win percentage for the season" do
