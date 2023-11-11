@@ -108,7 +108,7 @@ class StatTracker
     end
     coach_win_hash = Hash. new(0)
     games_total_by_coach = Hash.new(0)
-    coach_win_percentage = Hash. new(0.0)
+    coach_win_percentage = Hash.new(0.0)
     winner = nil
     game_list.each do |game|
       coach_win_hash[game.head_coach] += 1 if game.result == 'WIN'
@@ -139,7 +139,7 @@ class StatTracker
     end
     coach_lose_hash = Hash. new(0)
     games_total_by_coach = Hash.new(0)
-    coach_lose_percentage = Hash. new(0.0)
+    coach_lose_percentage = Hash.new(0.0)
     loser = nil
     game_list.each do |game|
       coach_lose_hash[game.head_coach] += 1 if game.result == 'LOSS'
