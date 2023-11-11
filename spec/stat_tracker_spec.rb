@@ -69,6 +69,11 @@ RSpec.describe StatTracker do
     expect(@stat_tracker.count_of_teams).to eq 32
   end
 
+  it "can return team with the highest average number of goals scored per game across all seasons"
+
+    expect(@stat_tracker.best_offense).to eq "Reign FC"
+  end
+
   it "can return a String of the team with the lowest average score per game across all seasons when they are a visitor" do
 
     expect(@stat_tracker.lowest_scoring_visitor).to be_a String
