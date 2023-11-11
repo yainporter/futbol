@@ -122,8 +122,8 @@ class StatTracker
       end
     end
     coach_win_percentage.select do |coach, win_percent|
-      winner = coach if win_percent == coach_win_percentage.values.max &&
-      coach_win_hash.values.max == coach_win_hash[coach]
+      winner = coach if win_percent == coach_win_percentage.values.max #&&
+      # coach_win_hash.values.max == coach_win_hash[coach] #only works for small dataset
     end
     winner
   end
@@ -153,8 +153,8 @@ class StatTracker
       end
     end
     coach_lose_percentage.select do |coach, lose_percent|
-      loser = coach if lose_percent == coach_lose_percentage.values.max &&
-      coach_lose_hash.values.max == coach_lose_hash[coach]
+      loser = coach if lose_percent == coach_lose_percentage.values.max #&&
+      #coach_lose_hash.values.max == coach_lose_hash[coach] #only works for small dataset
     end
     loser
   end
