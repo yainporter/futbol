@@ -65,7 +65,7 @@ class StatTracker
     end
     games.fdiv(@games.count).round(2)
   end
-
+  
   def average_goals_by_season
     average_goals_hash = Hash.new(0)
     count_of_games_by_season.each do |season, game_count|
@@ -79,6 +79,13 @@ class StatTracker
 
   def count_of_teams
     @teams.count
+  end
+
+  def find_team_name(team_id)
+    found_name = nil
+    @teams.select do |team|
+      return team.team_name if (team.team_id == team_id)
+    end
   end
 
   def lowest_scoring_visitor
