@@ -107,6 +107,10 @@ class StatTracker
     find_team_name(average_score_by_team.last[0])
   end
 
+  def worst_offense
+    find_team_name(average_score_by_team.first[0])
+  end
+
   def lowest_scoring_visitor
     find_team(:away, "min")
   end
