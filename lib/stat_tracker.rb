@@ -103,6 +103,10 @@ class StatTracker
     team_goal_average.sort_by {|key, value| value}
   end
 
+  def best_offense
+    find_team_name(average_score_by_team.last[0])
+  end
+
   def lowest_scoring_visitor
     find_team(:away, "min")
   end
