@@ -81,6 +81,36 @@ class StatTracker
     @teams.count
   end
 
+  def find_team_name(team_id)
+    found_name = nil
+    @teams.select do |team|
+      return team.team_name if (team.team_id == team_id)
+    end
+  end
+
+  def average_score_by_team
+    tot_hoa_goals_by_team_id = Hash.new{|key,value| key[value] = []}
+    @games.each do |game|
+      tot_hoa_goals_by_team_id[game.away_team_id] << game.away_goals.to_f
+      tot_hoa_goals_by_team_id[game.home_team_id] << game.home_goals.to_f
+    end
+
+    team_goal_average = Hash.new
+    tot_hoa_goals_by_team_id.each do |team_id, hoa_goals_array|
+      team_goal_average[team_id] = (hoa_goals_array.sum / hoa_goals_array.size).round(4)
+    end
+
+    team_goal_average.sort_by {|key, value| value}
+  end
+
+  def best_offense
+    find_team_name(average_score_by_team.last[0])
+  end
+
+  def worst_offense
+    find_team_name(average_score_by_team.first[0])
+  end
+
   def lowest_scoring_visitor
     find_team(:away, "min")
   end
@@ -97,8 +127,127 @@ class StatTracker
     find_team(:home, "max")
   end
 
+  def winningest_coach(season)
+    game_id_list = []
+    game_list = []
+    @games.each do |game|
+      game_id_list << game.game_id if game.season == season
+    end
+    @game_teams.each do |game|
+      game_list << game if game_id_list.include?(game.game_id)
+    end
+    coach_win_hash = Hash. new(0)
+    games_total_by_coach = Hash.new(0)
+    coach_win_percentage = Hash.new(0.0)
+    winner = nil
+    game_list.each do |game|
+      coach_win_hash[game.head_coach] += 1 if game.result == 'WIN'
+    end
+    game_list.each do |game|
+      games_total_by_coach[game.head_coach] += 1 if game.result != nil
+    end
+    games_total_by_coach.each do |coach, games|
+      coach_win_hash.each do |c, w|
+        coach_win_percentage[c] = w.fdiv(games).round(2) if coach == c
+      end
+    end
+    coach_win_hash.select do |coach, wins|
+      winner = coach if coach_win_hash[coach] == coach_win_hash.values.max
+    end
+    winner #get working with all seasons
+  end
+
+  def worst_coach(season)
+    game_id_list = []
+    game_list = []
+    @games.each do |game|
+      game_id_list << game.game_id if game.season == season
+    end
+    @game_teams.each do |game|
+      game_list << game if game_id_list.include?(game.game_id)
+    end
+    coach_win_hash = Hash. new(0)
+    games_total_by_coach = Hash.new(0)
+    coach_win_percentage = Hash.new(0.0)
+    loser = nil
+    game_list.each do |game|
+      coach_win_hash[game.head_coach] += 1 if game.result == 'LOSS'
+    end
+    game_list.each do |game|
+      games_total_by_coach[game.head_coach] += 1 if game.result != nil
+    end
+    games_total_by_coach.each do |coach, games|
+      coach_win_hash.each do |c, g|
+        coach_win_percentage[c] = g.fdiv(games).round(2) if coach == c
+      end
+    end
+    coach_win_hash.select do |coach, wins|
+      loser = coach if coach_win_hash[coach] == coach_win_hash.values.min
+    end
+    loser
+  end
+
+  def winningest_coach(season)
+    game_id_list = []
+    game_list = []
+    @games.each do |game|
+      game_id_list << game.game_id if game.season == season
+    end
+    @game_teams.each do |game|
+      game_list << game if game_id_list.include?(game.game_id)
+    end
+    coach_win_hash = Hash. new(0)
+    games_total_by_coach = Hash.new(0)
+    coach_win_percentage = Hash.new(0.0)
+    winner = nil
+    game_list.each do |game|
+      coach_win_hash[game.head_coach] += 1 if game.result == 'WIN'
+    end
+    game_list.each do |game|
+      games_total_by_coach[game.head_coach] += 1 if game.result != nil
+    end
+    games_total_by_coach.each do |coach, games|
+      coach_win_hash.each do |c, w|
+        coach_win_percentage[c] = w.fdiv(games).round(2) if coach == c
+      end
+    end
+    coach_win_hash.select do |coach, wins|
+      winner = coach if coach_win_hash[coach] == coach_win_hash.values.max
+    end
+    winner #get working with all seasons
+  end
+
+  def worst_coach(season)
+    game_id_list = []
+    game_list = []
+    @games.each do |game|
+      game_id_list << game.game_id if game.season == season
+    end
+    @game_teams.each do |game|
+      game_list << game if game_id_list.include?(game.game_id)
+    end
+    coach_win_hash = Hash. new(0)
+    games_total_by_coach = Hash.new(0)
+    coach_win_percentage = Hash.new(0.0)
+    loser = nil
+    game_list.each do |game|
+      coach_win_hash[game.head_coach] += 1 if game.result == 'LOSS'
+    end
+    game_list.each do |game|
+      games_total_by_coach[game.head_coach] += 1 if game.result != nil
+    end
+    games_total_by_coach.each do |coach, games|
+      coach_win_hash.each do |c, g|
+        coach_win_percentage[c] = g.fdiv(games).round(2) if coach == c
+      end
+    end
+    coach_win_hash.select do |coach, wins|
+      loser = coach if coach_win_hash[coach] == coach_win_hash.values.min
+    end
+    loser
+  end
+
   def most_tackles(season)
-    # find_teams_by_season("20122013")
     teams_most_or_least_tackles(season, "max")
   end
 
@@ -186,7 +335,7 @@ class StatTracker
     team_object_name = @teams.select{|team_object| team_object.team_id == team.first}
     team_object_name.pop.team_name
   end
-
+  
   def teams_total_tackles(season)
     team_total_tackles = Hash.new(0)
     @game_teams.each do |game_team|
