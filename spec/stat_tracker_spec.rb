@@ -75,6 +75,12 @@ RSpec.describe StatTracker do
     expect(@stat_tracker.find_team_name("17")).to eq("LA Galaxy")
   end
 
+  it "can return an array of total average number of goals scored across all seasons per team" do
+      expected = [["5", 0.5], ["16", 1.4286], ["3", 1.6], ["17", 1.8571], ["8", 2.0], ["9", 2.3333], ["6", 2.6667]]
+
+      expect(@stat_tracker.average_score_by_team).to eq expected
+  end
+
   it "can return a String of the team with the lowest average score per game across all seasons when they are a visitor" do
 
     expect(@stat_tracker.lowest_scoring_visitor).to be_a String
