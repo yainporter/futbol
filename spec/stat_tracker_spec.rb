@@ -68,7 +68,7 @@ RSpec.describe StatTracker do
     expect(@stat_tracker.count_of_teams).to be_a Integer
     expect(@stat_tracker.count_of_teams).to eq 32
   end
-  
+
   it "can find team name by team_id" do
 
     expect(@stat_tracker.find_team_name("14")).to eq("DC United")
@@ -147,5 +147,17 @@ RSpec.describe StatTracker do
 
     expect(@stat_tracker.worst_coach('20122013')).to be_a String
     expect(@stat_tracker.worst_coach('20122013')).to eq("Martin Raymond")
+  end
+
+  it 'can return the name of the Team with the most tackles in a season' do
+
+    expect(@stat_tracker.most_tackles("20122013")).to be_a String
+    expect(@stat_tracker.most_tackles("20122013")).to eq("FC Dallas")
+  end
+
+  it 'can return the name of the Team with the fewest tackles in a season' do
+
+    expect(@stat_tracker.fewest_tackles("20122013")).to be_a String
+    expect(@stat_tracker.fewest_tackles("20122013")).to eq("New England Revolution")
   end
 end
