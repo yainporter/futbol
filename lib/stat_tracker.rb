@@ -65,7 +65,7 @@ class StatTracker
     end
     games.fdiv(@games.count).round(2)
   end
-
+  
   def average_goals_by_season
     average_goals_hash = Hash.new(0)
     count_of_games_by_season.each do |season, game_count|
@@ -79,6 +79,36 @@ class StatTracker
 
   def count_of_teams
     @teams.count
+  end
+
+  def find_team_name(team_id)
+    found_name = nil
+    @teams.select do |team|
+      return team.team_name if (team.team_id == team_id)
+    end
+  end
+
+  def average_score_by_team
+    tot_hoa_goals_by_team_id = Hash.new{|key,value| key[value] = []}
+    @games.each do |game|
+      tot_hoa_goals_by_team_id[game.away_team_id] << game.away_goals.to_f
+      tot_hoa_goals_by_team_id[game.home_team_id] << game.home_goals.to_f
+    end
+
+    team_goal_average = Hash.new
+    tot_hoa_goals_by_team_id.each do |team_id, hoa_goals_array|
+      team_goal_average[team_id] = (hoa_goals_array.sum / hoa_goals_array.size).round(4)
+    end
+
+    team_goal_average.sort_by {|key, value| value}
+  end
+
+  def best_offense
+    find_team_name(average_score_by_team.last[0])
+  end
+
+  def worst_offense
+    find_team_name(average_score_by_team.first[0])
   end
 
   def lowest_scoring_visitor
