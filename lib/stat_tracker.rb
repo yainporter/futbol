@@ -88,6 +88,21 @@ class StatTracker
     end
   end
 
+  def average_score_by_team
+    tot_hoa_goals_by_team_id = Hash.new{|key,value| key[value] = []}
+    @games.each do |game|
+      tot_hoa_goals_by_team_id[game.away_team_id] << game.away_goals.to_f
+      tot_hoa_goals_by_team_id[game.home_team_id] << game.home_goals.to_f
+    end
+
+    team_goal_average = Hash.new
+    tot_hoa_goals_by_team_id.each do |team_id, hoa_goals_array|
+      team_goal_average[team_id] = (hoa_goals_array.sum / hoa_goals_array.size).round(4)
+    end
+
+    team_goal_average.sort_by {|key, value| value}
+  end
+
   def lowest_scoring_visitor
     find_team(:away, "min")
   end
