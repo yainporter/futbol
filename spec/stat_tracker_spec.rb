@@ -69,6 +69,28 @@ RSpec.describe StatTracker do
     expect(@stat_tracker.count_of_teams).to eq 32
   end
 
+  it "can find team name by team_id" do
+
+    expect(@stat_tracker.find_team_name("14")).to eq("DC United")
+    expect(@stat_tracker.find_team_name("17")).to eq("LA Galaxy")
+  end
+
+  it "can return an array of total average number of goals scored across all seasons per team" do
+      expected = [["5", 0.5], ["16", 1.4286], ["3", 1.6], ["17", 1.8571], ["8", 2.0], ["9", 2.3333], ["6", 2.6667]]
+
+      expect(@stat_tracker.average_score_by_team).to eq expected
+  end
+
+  it "can return team with the highest average number of goals scored per game across all seasons" do
+
+    expect(@stat_tracker.best_offense).to eq("FC Dallas")
+  end
+
+  it "can return team with the lowest average number of goals scored per game across all seasons" do
+
+    expect(@stat_tracker.worst_offense).to eq("Sporting Kansas City")
+  end
+
   it "can return a String of the team with the lowest average score per game across all seasons when they are a visitor" do
 
     expect(@stat_tracker.lowest_scoring_visitor).to be_a String
@@ -91,6 +113,52 @@ RSpec.describe StatTracker do
 
     expect(@stat_tracker.highest_scoring_home_team).to be_a String
     expect(@stat_tracker.highest_scoring_home_team).to eq ("FC Dallas")
+  end
+
+  it "can return the coach with highest winning percentage for a season" do
+    @game_path = './data/games.csv'
+    @team_path = './data/teams.csv'
+    @game_teams_path = './data/game_teams.csv'
+
+    @locations = {
+      games: @game_path,
+      teams: @team_path,
+      game_teams: @game_teams_path
+    }
+
+    @stat_tracker = StatTracker.from_csv(@locations)
+
+    expect(@stat_tracker.winningest_coach('20122013')).to be_a String
+    expect(@stat_tracker.winningest_coach('20122013')).to eq("Claude Julien").or(eq("Joel Quenneville"))
+  end
+
+  it "can return the coach with the worst win percentage for the season" do
+    @game_path = './data/games.csv'
+    @team_path = './data/teams.csv'
+    @game_teams_path = './data/game_teams.csv'
+
+    @locations = {
+      games: @game_path,
+      teams: @team_path,
+      game_teams: @game_teams_path
+    }
+
+    @stat_tracker = StatTracker.from_csv(@locations)
+
+    expect(@stat_tracker.worst_coach('20122013')).to be_a String
+    expect(@stat_tracker.worst_coach('20122013')).to eq("Martin Raymond")
+  end
+
+  it 'can return the name of the Team with the most tackles in a season' do
+
+    expect(@stat_tracker.most_tackles("20122013")).to be_a String
+    expect(@stat_tracker.most_tackles("20122013")).to eq("FC Dallas")
+  end
+
+  it 'can return the name of the Team with the fewest tackles in a season' do
+
+    expect(@stat_tracker.fewest_tackles("20122013")).to be_a String
+    expect(@stat_tracker.fewest_tackles("20122013")).to eq("New England Revolution")
   end
 
   it "has a most_accurate_team method" do
