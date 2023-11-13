@@ -6,7 +6,9 @@ require_relative './seasonable'
 
 class StatTracker
 include Seasonable
-  attr_reader :game_teams
+  attr_reader :game_teams,
+              :games,
+              :teams
 
   def initialize
     @games = @@games
