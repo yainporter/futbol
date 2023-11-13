@@ -16,18 +16,37 @@ RSpec.describe StatTracker do
   end
 
   it 'exists' do
+
     expect(@stat_tracker).to be_a StatTracker
   end
 
-  it "can create a new instance of StatTracker with data" do
+  it "can create a new instance of StatTracker with an Array of GameTeams, Games, and Teams" do
+
     expect(StatTracker.from_csv(@locations)).to be_a StatTracker
+    expect(StatTracker.from_csv(@locations).game_teams).to be_a Array
+    expect(StatTracker.from_csv(@locations).games).to be_a Array
+    expect(StatTracker.from_csv(@locations).teams).to be_a Array
+
+    StatTracker.from_csv(@locations).game_teams.each do |game_team|
+      expect(game_team).to be_a GameTeams
+    end
+
+    StatTracker.from_csv(@locations).games.each do |game|
+      expect(game).to be_a Game
+    end
+
+    StatTracker.from_csv(@locations).teams.each do |team|
+      expect(team).to be_a Teams
+    end
   end
 
   it "has a highest total points for a game" do
+
     expect(@stat_tracker.highest_total_score).to eq(5)
   end
 
   it 'has a lowest total points for a game' do
+
     expect(@stat_tracker.lowest_total_score).to eq(1)
   end
 
@@ -76,9 +95,16 @@ RSpec.describe StatTracker do
   end
 
   it "can return an array of total average number of goals scored across all seasons per team" do
-      expected = [["5", 0.5], ["16", 1.4286], ["3", 1.6], ["17", 1.8571], ["8", 2.0], ["9", 2.3333], ["6", 2.6667]]
 
-      expect(@stat_tracker.average_score_by_team).to eq expected
+    expected = [["5", 0.5],
+                ["16", 1.4286],
+                ["3", 1.6],
+                ["17", 1.8571],
+                ["8", 2.0],
+                ["9", 2.3333],
+                ["6", 2.6667]]
+
+    expect(@stat_tracker.average_score_by_team).to eq expected
   end
 
   it "can return team with the highest average number of goals scored per game across all seasons" do

@@ -6,7 +6,9 @@ require_relative './seasonable'
 
 class StatTracker
 include Seasonable
-  attr_reader :game_teams
+  attr_reader :game_teams,
+              :games,
+              :teams
 
   def initialize
     @games = @@games
@@ -23,12 +25,12 @@ include Seasonable
   end
 
   def highest_total_score
-    most_goals = @games.max_by{|game| game.home_goals + game.away_goals}
+    most_goals = @games.max_by{|game| total_goals(game)}
     most_goals = most_goals.home_goals + most_goals.away_goals
   end
 
   def lowest_total_score
-    fewest_goals = @games.map{|game| game.home_goals + game.away_goals}
+    fewest_goals = @games.map{|game| total_goals(game)}
     fewest_goals = fewest_goals.min
   end
 
@@ -63,7 +65,7 @@ include Seasonable
 
   def average_goals_per_game
     games = @games.sum do |game|
-      game.home_goals + game.away_goals
+      total_goals(game)
     end
     games.fdiv(@games.count).round(2)
   end
@@ -190,7 +192,7 @@ include Seasonable
       home: teams_average_score_home,
       away: teams_average_score_away
     }
-  end  
+  end
 
   def find_team(hoa, max_or_min)
     team = nil
@@ -211,5 +213,3 @@ include Seasonable
     team_object_name.pop.team_name
   end
 end
-
-
