@@ -131,6 +131,7 @@ include Seasonable
     find_team(:home, "max")
   end
 
+
   private
 
   def total_goals(game)
@@ -191,7 +192,7 @@ include Seasonable
       home: teams_average_score_home,
       away: teams_average_score_away
     }
-  end
+  end  
 
   def find_team(hoa, max_or_min)
     team = nil
@@ -212,3 +213,5 @@ include Seasonable
     team_object_name.pop.team_name
   end
 end
+
+

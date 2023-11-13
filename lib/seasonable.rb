@@ -69,6 +69,75 @@ module Seasonable
 
   end
 
+  def team_id_name_hash_creation
+    #returns a hash with keys of team_id and values of corresponding team names
+    team_name_hash = Hash.new(0)
+    @teams.each do |team|
+      team_name_hash[team.team_id] = team.team_name
+    end
+    team_name_hash
+  end
+  
+  def games_in_each_season
+    #returns a hash with keys of season_id and values as an array of game_ids
+    games_in_season_hash = {}
+    @games.each do |game|
+      if !games_in_season_hash[game.season]
+        games_in_season_hash[game.season] = []
+        games_in_season_hash[game.season] << game.game_id
+      else 
+        games_in_season_hash[game.season].push(game.game_id)
+      end
+    end
+    games_in_season_hash
+  end
+  
+  def team_goal_percentage_hash(season)
+    #returns a hash with keys of team names (as strings) and values of "goal/shot percentage" for a given season
+    games_in_season_hash = games_in_each_season
+    team_name_hash = team_id_name_hash_creation
+    shots_goals_by_team_name_hash = {}
+  
+    games_in_season_hash[season].each do |game_id|
+      @game_teams.each do |game_team|
+        if game_id == game_team.game_id
+          name_1 = game_team.team_id
+          team_name_hash.each do |id, name|
+            if name_1 == id
+              name_1 = name
+              if !shots_goals_by_team_name_hash[name_1]
+                shots_goals_by_team_name_hash[name_1] = {goals: game_team.goals, shots: game_team.shots}
+              else
+                shots_goals_by_team_name_hash[name_1][:goals] += game_team.goals
+                shots_goals_by_team_name_hash[name_1][:shots] += game_team.shots
+              end
+            end
+          end
+        end
+      end
+    end
+    shots_goals_by_team_name_hash.each do |name, shots_goals|
+      shots_goals_by_team_name_hash[name] = shots_goals[:goals].fdiv(shots_goals[:shots]).round(5)
+    end
+    shots_goals_by_team_name_hash
+  end
+  
+  def most_accurate_team(season)
+    shots_goals_by_team_name_hash = team_goal_percentage_hash(season)
+    max_team_and_percentage_array = shots_goals_by_team_name_hash.max_by do |name, percentage|
+      percentage
+    end
+    max_team_and_percentage_array.shift
+  end
+  
+  def least_accurate_team(season)
+    shots_goals_by_team_name_hash = team_goal_percentage_hash(season)
+    min_team_and_percentage_array = shots_goals_by_team_name_hash.min_by do |name, percentage|
+      percentage
+    end
+    min_team_and_percentage_array.shift
+  end
+
   private
 
   def teams_total_tackles(season)
@@ -93,3 +162,5 @@ module Seasonable
     @teams.select{|teams| teams.team_id == team.first}.pop.team_name
   end
 end
+
+
